@@ -41,6 +41,18 @@ Navigate to the `src` directory to explore the implementation details.
 
 Look in the `examples` directory for usage examples, presented in jupyter notebook and `.py` form.
 
+You can run the examples either as python scripts:
+
+    ```
+    python heat_eq.py
+    ```
+
+or as Jupyter Notebooks (recommended):
+
+    ```
+    jupyter notebook heat_eq.py
+    ```
+
 ## Provide Feedback
 
 If you encounter any issues or have questions, please open an issue on this repository.
