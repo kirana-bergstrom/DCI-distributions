@@ -2,7 +2,7 @@
 
 ## Overview
 
-Welcome to the GitHub repository for the mathematical research paper titled "**[A DISTRIBUTIONS-BASED APPROACH TO DATA-CONSISTENT INVERSION]**". This repository is intended to provide a comprehensive set of code and examples to facilitate the reproducibility of the research presented in the paper.
+Welcome to the GitHub repository for the research paper "**A Distributions-based Approach to Data-consistent Inversion**". This repository is intended to provide a comprehensive set of code and examples to facilitate the reproducibility of the research presented in the paper.
 
 ## Paper Information
 
@@ -50,8 +50,6 @@ If you encounter any issues or have questions, please open an issue on this repo
 If you find this code useful for your research, please consider citing our paper:
 
     ```
-    bibtex
-    Copy code
     @article{Bergstrom:2024,
       title   = {A Distributions-based Approach to Data-consistent Inversion},
       author  = {K. O. Bergstrom and T. D. Butler and T. M. Wildey},
@@ -64,4 +62,4 @@ If you find this code useful for your research, please consider citing our paper
 This code is released under the [Your License] License. See the LICENSE file for details.
 
 ## Contact
-For any inquiries or assistance, please contact [Kirana Bergstrom] at [kirana.bergstrom@ucdenver.edu].
+For any inquiries or assistance, please contact Kirana Bergstrom at kirana.bergstrom@ucdenver.edu.
