@@ -6,19 +6,17 @@ Welcome to the GitHub repository for the mathematical research paper titled "**[
 
 ## Paper Information
 
-- **Title:** [A DISTRIBUTIONS-BASED APPROACH TO DATA-CONSISTENT INVERSION]
-- **Authors:** [K. O. Bergstrom], [T. D. Butler], [T. M. Wildey]
-- **Published in:** [SIAM SISC]
+- **Title:** A Distributions-based Approach to Data-consistent Inversion
+- **Authors:** K. O. Bergstrom, T. D. Butler, T. M. Wildey
+- **Submitted to:** SIAM Journal on Scientific Computing (SISC)
 
 ## Repository Structure
 
 The repository is organized as follows:
 
-- `src/`: This directory contains the source code for implementing the algorithms and conducting experiments discussed in the paper.
+- `src`: This directory contains the source code for implementing the algorithms and conducting experiments discussed in the paper.
 
-- `data/`: This directory holds any necessary datasets used in the experiments.
-
-- `examples/`: This section contains usage examples, sample inputs, and expected outputs to guide users in reproducing the results.
+- `examples`: This directory contains usage examples, needed data, and expected outputs to guide users in reproducing the results.
 
 ## Reproducing Results
 
@@ -26,45 +24,44 @@ To reproduce the results presented in the paper, follow these steps:
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/yourusername/research-paper-reproducibility.git
-   cd research-paper-reproducibility
+   git clone https://github.com/kirana-bergstrom/DCI-distributions.git
+   cd DCI-distributions
    ```
 
 2. **Install Dependencies:**
 
     ```
     bash
-    pip install -r docs/requirements.txt
+    pip install -r requirements.txt
     ```
 
 3. **Explore Code and Examples:**
 
-Navigate to the code/ directory to explore the implementation details.
+Navigate to the `src` directory to explore the implementation details.
 
-Check the examples/ directory for usage examples.
+Look in the `examples` directory for usage examples, presented in jupyter notebook and `.py` form.
 
-5. Provide Feedback:
+## Provide Feedback
 
 If you encounter any issues or have questions, please open an issue on this repository.
-Citation
+
+## Citation
+
 If you find this code useful for your research, please consider citing our paper:
 
     ```
     bibtex
     Copy code
-    @article{AuthorLastName:Year,
-      title   = {Your Paper Title},
-      author  = {Author 1 and Author 2 and ...},
-      journal = {Journal/Conference},
-      year    = {Year},
-      doi     = {DOI if available}
+    @article{Bergstrom:2024,
+      title   = {A Distributions-based Approach to Data-consistent Inversion},
+      author  = {K. O. Bergstrom and T. D. Butler and T. M. Wildey},
+      journal = {SIAM Journal on Scientific Computing (SISC)},
+      year    = {2024}
     }
     ```
 
-License
+## License
 This code is released under the [Your License] License. See the LICENSE file for details.
 
-Contact
-For any inquiries or assistance, please contact [Your Name] at [your.email@example.com].
-
-Happy exploring and reproducing!
+## Contact
+For any inquiries or assistance, please contact [Kirana Bergstrom] at [kirana.bergstrom@ucdenver.edu].
