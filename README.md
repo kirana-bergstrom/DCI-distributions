@@ -43,6 +43,9 @@ Look in the `examples` directory for usage examples, presented in jupyter notebo
 You can run the examples either as python scripts:
 
     ```bash
+    pip install -r requirements.txt
+    ```
+    ```bash
     python heat_eq.py
     ```
 
