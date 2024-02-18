@@ -61,14 +61,14 @@ If you encounter any issues or have questions, please open an issue on this repo
 
 If you find this code useful for your research, please consider citing our paper:
 
-    ```bibtex
-    @article{Bergstrom:2024,
-      title   = {A Distributions-based Approach to Data-consistent Inversion},
-      author  = {K. O. Bergstrom and T. D. Butler and T. M. Wildey},
-      journal = {SIAM Journal on Scientific Computing (SISC)},
-      year    = {2024}
-    }
-    ```
+```bibtex
+@article{Bergstrom:2024,
+  title   = {A Distributions-based Approach to Data-consistent Inversion},
+  author  = {K. O. Bergstrom and T. D. Butler and T. M. Wildey},
+  journal = {SIAM Journal on Scientific Computing (SISC)},
+  year    = {2024}
+}
+```
 
 ## License
 This code is released under the [Your License] License. See the LICENSE file for details.
