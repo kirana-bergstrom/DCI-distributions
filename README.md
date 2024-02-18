@@ -23,6 +23,7 @@ The repository is organized as follows:
 To reproduce the results presented in the paper, follow these steps:
 
 1. **Clone the Repository:**
+
    ```bash
    git clone https://github.com/kirana-bergstrom/DCI-distributions.git
    cd DCI-distributions
@@ -42,9 +43,12 @@ Look in the `examples` directory for usage examples, presented in jupyter notebo
 
 You can run the examples either as python scripts:
 
+3. **Install Dependencies:**
+
     ```bash
     pip install -r requirements.txt
     ```
+
     ```bash
     python heat_eq.py
     ```
