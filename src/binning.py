@@ -1,10 +1,37 @@
-import src.weightedCDFs as wcdfs
-from sklearn.cluster import KMeans
 import numpy as np
 import scipy
+import src.weightedEDFs as wedfs
+
+from sklearn.cluster import KMeans
 
 
-def distributeWeights(init_samples, bins_of_samples, w_bin, w_init=None):
+'''
+This module constructs the methods to compute the solutions to DCI problems using
+the binning method described in the Distributions-based DCI paper as stated in the README.
+
+The goal is to use this approach to solve Data-Consistent Inversion (DCI) problems as presented in
+
+  Combining Push-Forward Measures and Bayes' Rule to Construct Consistent Solutions to Stochastic Inverse Problems, 
+  T. Butler, J. Jakeman, T. Wildey, SIAM J. Sci. Comput., 40(2), A984–A1011 (2018)
+  
+  URL: https://epubs.siam.org/doi/abs/10.1137/16M1087229
+
+The examples in the examples directory of this repository contain demonstrations of applications of the method.
+'''
+
+
+def distributeWeights(init_samples, bins_of_samples, w_bin):
+    '''
+    This function distributes a computed set of weights for a set of bins among the samples
+    in the bins.
+    
+    :param init_samples: a numpy array of dimension n-by-d (n=# samples, d=dimension of samples)
+    :param init_samples: a numpy array of n containing integers corresponding to the bin IDs that
+                         the samples fall into
+    :param w_bin: a numpy array of n containing floats corresponding to the weights of the bins
+    :rtype: numpy array
+    :returns: n-by-n array H
+    '''
 
     n_bins = len(w_bin)
     w = np.empty(len(init_samples))
@@ -20,8 +47,19 @@ def distributeWeights(init_samples, bins_of_samples, w_bin, w_init=None):
     return w
 
 
-def computePartitionedWeights_kMeans_IID(init_samples, pred_samples, w_init=None,
-                                         sample_set_2=None, targ_CDF=None, n_clusters=None):
+def computePartitionedWeights_kMeans_IID(init_samples, pred_samples, sample_set_2=None,
+                                         targ_CDF=None, n_clusters=None):
+    '''
+    This function distributes a computed set of weights for a set of bins among the samples
+    in the bins.
+    
+    :param init_samples: a numpy array of dimension n-by-d (n=# samples, d=dimension of samples)
+    :param pred_samples: a numpy array of n containing integers corresponding to the bin IDs that
+                         the samples fall into
+    :param w_bin: a numpy array of n containing floats corresponding to the weights of the bins
+    :rtype: numpy array
+    :returns: n-by-n array H
+    '''
 
     n_samples = len(pred_samples)
 
