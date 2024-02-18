@@ -43,21 +43,19 @@ Look in the `examples` directory for usage examples, presented in jupyter notebo
 
 You can run the examples either as python scripts:
 
-3. **Install Dependencies:**
+```bash
+pip install -r requirements.txt
+```
 
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-    ```bash
-    python heat_eq.py
-    ```
+```bash
+python heat_eq.py
+```
 
 or as Jupyter Notebooks (recommended):
 
-    ```bash
-    jupyter notebook heat_eq.py
-    ```
+```bash
+jupyter notebook heat_eq.py
+```
 
 ## Provide Feedback
 
