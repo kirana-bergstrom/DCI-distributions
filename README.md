@@ -30,8 +30,7 @@ To reproduce the results presented in the paper, follow these steps:
 
 2. **Install Dependencies:**
 
-    ```
-    bash
+    ```bash
     pip install -r requirements.txt
     ```
 
@@ -43,14 +42,12 @@ Look in the `examples` directory for usage examples, presented in jupyter notebo
 
 You can run the examples either as python scripts:
 
-    ```
-    python heat_eq.py
+    ```python heat_eq.py
     ```
 
 or as Jupyter Notebooks (recommended):
 
-    ```
-    jupyter notebook heat_eq.py
+    ```jupyter notebook heat_eq.py
     ```
 
 ## Provide Feedback
@@ -61,8 +58,7 @@ If you encounter any issues or have questions, please open an issue on this repo
 
 If you find this code useful for your research, please consider citing our paper:
 
-    ```
-    @article{Bergstrom:2024,
+    ```@article{Bergstrom:2024,
       title   = {A Distributions-based Approach to Data-consistent Inversion},
       author  = {K. O. Bergstrom and T. D. Butler and T. M. Wildey},
       journal = {SIAM Journal on Scientific Computing (SISC)},
