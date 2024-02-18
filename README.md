@@ -37,25 +37,21 @@ To reproduce the results presented in the paper, follow these steps:
 
 3. **Explore Code and Examples:**
 
-Navigate to the `src` directory to explore the implementation details.
+    Navigate to the `src` directory to explore the implementation details.
 
-Look in the `examples` directory for usage examples, presented in jupyter notebook and `.py` form.
+    Look in the `examples` directory for usage examples, presented in jupyter notebook and `.py` form.
 
-You can run the examples either as python scripts:
+    You can run the examples either as python scripts:
 
-```bash
-pip install -r requirements.txt
-```
+    ```bash
+    python heat_eq.py
+    ```
 
-```bash
-python heat_eq.py
-```
+    or as Jupyter Notebooks (recommended):
 
-or as Jupyter Notebooks (recommended):
-
-```bash
-jupyter notebook heat_eq.py
-```
+    ```bash
+    jupyter notebook heat_eq.py
+    ```
 
 ## Provide Feedback
 
