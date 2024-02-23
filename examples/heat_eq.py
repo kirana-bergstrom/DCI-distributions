@@ -15,8 +15,8 @@ from scipy.stats import norm
 import scipy.integrate as integrate
 import seaborn as sns
 
-import src.weightedCDFs as wCDFs
-import src.weights as weights
+import src.weightedEDFs as wEDFs
+import src.binning as binning
 
 
 def u_k(k, x, t, l, kappa):
@@ -59,6 +59,9 @@ def main():
 
     # set plotting parameters ==============================================
     plot_directory = './plots'
+
+    if not os.path.exists(plot_directory):
+        os.makedirs(plot_directory)
 
     mpl.rcParams['lines.linewidth'] = 4
     plt.rc('font', size=14)
@@ -257,10 +260,10 @@ def main():
 
 
     # computing naive optimization-based results
-    H = wCDFs.compute_H(np.reshape(pred_samples, (len(pred_samples),1)))
-    b = wCDFs.compute_b(np.reshape(pred_samples, (len(pred_samples),1)),
+    H = wEDFs.compute_H(np.reshape(pred_samples, (len(pred_samples),1)))
+    b = wEDFs.compute_b(np.reshape(pred_samples, (len(pred_samples),1)),
                         sample_set_2=np.reshape(obs_samples, (len(obs_samples),1)))
-    w = wCDFs.compute_optimal_w(H, b)
+    w = wEDFs.compute_optimal_w(H, b)
 
 
     # plotting naive results as weights ======================================
@@ -306,7 +309,7 @@ def main():
     # beginning binning-based method computations
     p = 35
 
-    rpartitioned_w, bins, centers, w_center = weights.computePartitionedWeights_regulargrid_IID(init_samples,
+    rpartitioned_w, bins, centers, w_center = binning.computePartitionedWeights_regulargrid_IID(init_samples,
                                                                             pred_samples,
                                                                             sample_set_2=np.reshape(obs_samples, (len(obs_samples),1)),
                                                                             n_bins=p)
@@ -368,7 +371,7 @@ def main():
 
 
     # binning with K-means partitioning
-    kpartitioned_w, clusters, centers, w_center = weights.computePartitionedWeights_kMeans_IID(init_samples,
+    kpartitioned_w, clusters, centers, w_center = binning.computePartitionedWeights_kMeans_IID(init_samples,
                                                                             pred_samples,
                                                                             sample_set_2=np.reshape(obs_samples, (len(obs_samples),1)),
                                                                             n_clusters=p)
@@ -454,18 +457,18 @@ def main():
     # begin experiment with smaller number of samples and bins
     n_init_samples_small = 200
 
-    H = wCDFs.compute_H(pred_samples[:n_init_samples_small,:])
-    b = wCDFs.compute_b(pred_samples[:n_init_samples_small,:], targ_CDF=obs_dist.cdf)
-    w = wCDFs.compute_optimal_w(H, b)
+    H = wEDFs.compute_H(pred_samples[:n_init_samples_small,:])
+    b = wEDFs.compute_b(pred_samples[:n_init_samples_small,:], targ_CDF=obs_dist.cdf)
+    w = wEDFs.compute_optimal_w(H, b)
 
     p = 10
 
-    kpartitioned_w, clusters, centers, w_center = weights.computePartitionedWeights_kMeans_IID(init_samples[:n_init_samples_small,:],
+    kpartitioned_w, clusters, centers, w_center = binning.computePartitionedWeights_kMeans_IID(init_samples[:n_init_samples_small,:],
                                                                             pred_samples[:n_init_samples_small,:],
                                                                             sample_set_2=np.reshape(obs_samples, (len(obs_samples),1)),
                                                                             n_clusters=p)
 
-    rpartitioned_w, bins, centers, w_center = weights.computePartitionedWeights_regulargrid_IID(init_samples[:n_init_samples_small,:],
+    rpartitioned_w, bins, centers, w_center = binning.computePartitionedWeights_regulargrid_IID(init_samples[:n_init_samples_small,:],
                                                                             pred_samples[:n_init_samples_small,:],
                                                                             sample_set_2=np.reshape(obs_samples, (len(obs_samples),1)),
                                                                             n_bins=p)
@@ -574,7 +577,7 @@ def main():
 
     n_bins = 100
 
-    kpartitioned_w, clusters, centers, w_center = weights.computePartitionedWeights_kMeans_IID(init_samples,
+    kpartitioned_w, clusters, centers, w_center = binning.computePartitionedWeights_kMeans_IID(init_samples,
                                                             pred_samples,
                                                             sample_set_2=np.reshape(obs_samples, (len(obs_samples),1)),
                                                             n_clusters=n_bins)

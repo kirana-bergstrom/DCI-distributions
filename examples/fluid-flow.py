@@ -15,8 +15,8 @@ from scipy.stats import multivariate_normal
 from scipy.stats import norm
 import seaborn as sns
 
-import src.weightedCDFs as wCDFs
-import src.weights as weights
+import src.weightedEDFs as wEDFs
+import src.binning as binning
 
 
 def rejection_sampling(r):
@@ -31,6 +31,9 @@ def main():
 
     # set plotting parameters ==============================================
     plot_directory = './plots'
+
+    if not os.path.exists(plot_directory):
+        os.makedirs(plot_directory)
 
     mpl.rcParams['lines.linewidth'] = 4
     plt.rc('font', size=14)
@@ -130,7 +133,7 @@ def main():
 
     # for binning method
     n_clusters = 120
-    w, labels, centers, w_cluster = weights.computePartitionedWeights_kMeans_IID(init_samples,
+    w, labels, centers, w_cluster = binning.computePartitionedWeights_kMeans_IID(init_samples,
                                                                                  pred_samples,
                                                                                  sample_set_2=obs_samples,
                                                                                  n_clusters=n_clusters)

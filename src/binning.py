@@ -36,13 +36,10 @@ def distributeWeights(init_samples, bins_of_samples, w_bin):
     n_bins = len(w_bin)
     w = np.empty(len(init_samples))
 
-    if w_init is None:
-        w_init = np.ones(len(init_samples))
-
     for i in range(n_bins):
         bin_inds = (bins_of_samples == i)
         n_i = np.sum(bin_inds)
-        w[bin_inds] = (w_bin[i] / n_bins) / np.sum(w_init[bin_inds]) if n_i != 0 else 0
+        w[bin_inds] = (w_bin[i] / n_bins) / n_i if n_i != 0 else 0
 
     return w
 
@@ -73,15 +70,15 @@ def computePartitionedWeights_kMeans_IID(init_samples, pred_samples, sample_set_
     labels = kmeans.labels_
 
     # compute weights for clusters
-    H_cluster = wcdfs.compute_H(centers)
+    H_cluster = wedfs.compute_H(centers)
     if targ_CDF is not None:
-        b_cluster = wcdfs.compute_b(centers, targ_CDF=targ_CDF)
+        b_cluster = wedfs.compute_b(centers, targ_CDF=targ_CDF)
     elif sample_set_2 is not None:
-        b_cluster = wcdfs.compute_b(centers, sample_set_2=sample_set_2)
-    w_cluster = wcdfs.compute_optimal_w(H_cluster, b_cluster)
+        b_cluster = wedfs.compute_b(centers, sample_set_2=sample_set_2)
+    w_cluster = wedfs.compute_optimal_w(H_cluster, b_cluster)
     
     # distribute weights evenly in clusters
-    w = distributeWeights(init_samples, labels, w_cluster, w_init=w_init)
+    w = distributeWeights(init_samples, labels, w_cluster)
 
     return w, labels, centers, w_cluster
 
@@ -232,12 +229,12 @@ def computePartitionedWeights_regulargrid_IID(init_samples, pred_samples, bbox=N
     centers = np.array(centers)
 
     # compute weights for clusters
-    H_bin = wcdfs.compute_H(centers)
+    H_bin = wedfs.compute_H(centers)
     if targ_CDF is not None:
-        b_bin = wcdfs.compute_b(centers, targ_CDF=targ_CDF)
+        b_bin = wedfs.compute_b(centers, targ_CDF=targ_CDF)
     elif sample_set_2 is not None:
-        b_bin = wcdfs.compute_b(centers, sample_set_2=sample_set_2)
-    w_bin = wcdfs.compute_optimal_w(H_bin, b_bin)
+        b_bin = wedfs.compute_b(centers, sample_set_2=sample_set_2)
+    w_bin = wedfs.compute_optimal_w(H_bin, b_bin)
     
     # distribute weights evenly in clusters
     w = distributeWeights(init_samples, labels, w_bin)

@@ -15,8 +15,8 @@ from scipy.stats import multivariate_normal
 from scipy.stats import norm
 import seaborn as sns
 
-import src.weightedCDFs as wCDFs
-import src.weights as weights
+import src.weightedEDFs as wEDFs
+import src.binning as binning
 
 
 def u_k(k, x, t, l, kappa):
@@ -47,6 +47,9 @@ def main():
 
     # set plotting parameters ==============================================
     plot_directory = './plots'
+
+    if not os.path.exists(plot_directory):
+        os.makedirs(plot_directory)
 
     mpl.rcParams['lines.linewidth'] = 4
     plt.rc('font', size=14)
@@ -239,7 +242,7 @@ def main():
 
         for b, n_bins in enumerate(bin_numbers):
 
-            rpartitioned_w, bins, centers, w_center = weights.computePartitionedWeights_regulargrid_IID(init_samples,
+            rpartitioned_w, bins, centers, w_center = binning.computePartitionedWeights_regulargrid_IID(init_samples,
                                                                                     pred_samples, bbox=[d_min,d_max],
                                                                                     sample_set_2=np.reshape(obs_samples, (len(obs_samples),1)),
                                                                                     n_bins=n_bins)
@@ -324,7 +327,7 @@ def main():
 
                 for b, n_bins in enumerate(bin_numbers):
 
-                    rpartitioned_w, bins, centers, w_center = weights.computePartitionedWeights_regulargrid_IID(init_samples,
+                    rpartitioned_w, bins, centers, w_center = binning.computePartitionedWeights_regulargrid_IID(init_samples,
                                                                                             pred_samples, bbox=[d_min, d_max],
                                                                                             sample_set_2=np.reshape(obs_samples, (len(obs_samples),1)),
                                                                                             n_bins=n_bins)
@@ -348,15 +351,15 @@ def main():
         dist_prob_A = np.array(c_A)
         dist_prob_B = np.array(c_B)
 
-        np.save('./data/convergence_dist_prob_A.npy', c_A.reshape(n_cases, -1))
-        np.save('./data/convergence_dist_prob_B.npy', c_B.reshape(n_cases, -1))
+        np.save('./data/convergence_dist_prob_A.npy', dist_prob_A.reshape(n_trials, -1))
+        np.save('./data/convergence_dist_prob_B.npy', dist_prob_B.reshape(n_trials, -1))
 
     else:
 
-        dist_prob_A = np.load('./data/convergence_dist_prob_A.npy').reshape(n_cases,
+        dist_prob_A = np.load('./data/convergence_dist_prob_A.npy').reshape(n_trials,
                                                                             len(init_samples_numbers),
                                                                             len(bin_numbers))
-        dist_prob_B = np.load('./data/convergence_dist_prob_B.npy').reshape(n_cases,
+        dist_prob_B = np.load('./data/convergence_dist_prob_B.npy').reshape(n_trials,
                                                                             len(init_samples_numbers),
                                                                             len(bin_numbers))
 
