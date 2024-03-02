@@ -157,20 +157,21 @@ def main():
     plt.figure()
     xx = np.linspace(np.min(pred_samples), np.max(bad_obs_samples), 1000)
 
-    plt.hist(obs_samples, bins=20, alpha=0.3, density=True, label='Observed histogram', rwidth=0.85)
-    plt.plot(xx, obs_KDE(xx), color=CB_color_cycle[0], label='Observed KDE')
+    plt.hist(obs_samples, bins=20, alpha=0.3, density=True, label='Observed histogram', rwidth=0.85, color=CB_color_cycle[0]);
+    plt.plot(xx, obs_KDE(xx), color=CB_color_cycle[0], label='Observed KDE');
 
-    plt.hist(pred_samples, bins=20, alpha=0.3, density=True, label='Predicted histogram', rwidth=0.85)
-    plt.plot(xx, pred_KDE(xx), color=CB_color_cycle[1], label='Predicted KDE')
+    plt.hist(pred_samples, bins=20, alpha=0.3, density=True, label='Predicted histogram', rwidth=0.85, color=CB_color_cycle[1]);
+    plt.plot(xx, pred_KDE(xx), color=CB_color_cycle[1], label='Predicted KDE', ls=':');
 
-    plt.hist(bad_obs_samples, bins=20, alpha=0.3, density=True, label='Pred. violation observed histogram', rwidth=0.85)
-    plt.plot(xx, bad_obs_KDE(xx), color=CB_color_cycle[2], label='Pred. violation observed KDE')
+    plt.hist(bad_obs_samples, bins=20, alpha=0.3, density=True, label='Pred. violation observed histogram',
+             rwidth=0.85, color=CB_color_cycle[2]);
+    plt.plot(xx, bad_obs_KDE(xx), color=CB_color_cycle[2], label='Pred. violation observed KDE', ls='-.');
 
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), shadow=True)
-    plt.xlabel(r'$\mathcal{D}$')
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), shadow=True);
+    plt.xlabel(r'$\mathcal{D}$');
     plt.xticks(ticks=np.linspace(np.min(pred_samples), np.max(bad_obs_samples), 6),
-               labels=["{:.3f}".format(x) for x in np.linspace(np.min(pred_samples), np.max(bad_obs_samples), 6)])
-    plt.ylabel('Density')
+               labels=["{:.3f}".format(x) for x in np.linspace(np.min(pred_samples), np.max(bad_obs_samples), 6)]);
+    plt.ylabel('Density');
 
     plt.savefig(f'{plot_directory}/heat_eq_dists.png', bbox_inches='tight')
     # ========================================================================
@@ -198,14 +199,14 @@ def main():
     plt.figure()
     xx = np.linspace(np.min(pred_samples[:,0]), np.max(pred_samples[:,0]), 1000)
 
-    plt.plot(xx, obs_KDE(xx), label=r'$\pi_{obs}$')
-    plt.plot(xx, pred_KDE(xx), label=r'$\pi_{pred}$')
-    plt.plot(xx, pf_KDE(xx), label=r'$\pi_{update}$')
+    plt.plot(xx, obs_KDE(xx), label=r'$\pi_{obs}$', ls='-');
+    plt.plot(xx, pred_KDE(xx), label=r'$\pi_{pred}$', ls=':');
+    plt.plot(xx, pf_KDE(xx), label=r'$\pi_{update}$', ls='--');
 
     plt.xticks(ticks=np.linspace(np.min(pred_samples), np.max(pred_samples), 6),
-               labels=["{:.3f}".format(x) for x in np.linspace(np.min(pred_samples), np.max(pred_samples), 6)])
-    plt.xlabel(r'$u$')
-    plt.legend(shadow=True)
+               labels=["{:.3f}".format(x) for x in np.linspace(np.min(pred_samples), np.max(pred_samples), 6)]);
+    plt.xlabel(r'$u$');
+    plt.legend(shadow=True);
 
     plt.tight_layout()
     plt.savefig(f'{plot_directory}/dens_results.png', bbox_inches='tight')
@@ -479,23 +480,24 @@ def main():
 
     # plot weights EDFs from optimization methods ============================
     plt.figure()
-    plt.plot(np.append(np.min(pred_samples[:n_init_samples_small,0]),
-                       np.append(obs_samples[isort_obs], np.max(pred_samples[:n_init_samples_small,0]))),
-             np.append(0, np.append(np.cumsum([1/n_obs_samples]*n_obs_samples), 1)), label='$F^m_{obs}$')
-
-    plt.step(pred_samples[isort], np.cumsum([1/n_init_samples_small]*n_init_samples_small),
-             label=r'$F^n_{pred}$', ls='dashed')
+    plt.plot(np.append(np.min(pred_samples[:,0]), np.append(obs_samples[isort_obs], np.max(pred_samples[:,0]))),
+             np.append(0, np.append(np.cumsum([1/n_obs_samples]*n_obs_samples), 1)), label=r'$F^m_{obs}$');
     plt.step(pred_samples[isort], np.cumsum(w[isort]/n_init_samples_small),
-             label=r'$F^n_{predw}$', ls='solid')
+             label=r'$F^m_{w;pred}$, naïve', ls='dotted');
+    plt.step(pred_samples[isort], np.cumsum(rpartitioned_w[isort]),
+             label=r'$F^m_{w;pred}$, regular partition', ls='--');
+    plt.step(pred_samples[isort], np.cumsum(kpartitioned_w[isort]),
+             label=r'$F^m_{w;pred}$, k-means partition', ls='-.');
 
-    plt.xticks(ticks=np.linspace(np.min(ZZ), np.max(ZZ), 7),
-               labels=["{:.3f}".format(x) for x in np.linspace(np.min(ZZ), np.max(ZZ), 7)])
-    plt.xlabel(r'$\mathcal{D}$')
-    plt.ylabel('Cumulative distribution')
-    plt.legend(loc='upper left', shadow=True)
+    plt.xlim(0.584, 0.606)
+    plt.xticks(ticks=np.linspace(0.584, 0.606, 6),
+               labels=["{:.3f}".format(x) for x in np.linspace(np.min(ZZ), np.max(ZZ), 6)]);
+    plt.xlabel(r'$\mathcal{D}$');
+    plt.ylabel('Cumulative distribution');
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), shadow=True);
 
     plt.tight_layout()
-    plt.savefig(f'{plot_directory}/small_dist_cdfs.png')
+    plt.savefig(f'{plot_directory}/small_cdf_compare.png')
     # ========================================================================
 
 
@@ -529,16 +531,16 @@ def main():
     plt.figure()
     xx = np.linspace(np.min(pred_samples)-0.01, np.max(pred_samples)+0.01, 1000)
 
-    plt.hist(obs_samples, bins=15, alpha=0.3, density=True, label='Observed hist.', rwidth=0.85)
-    plt.plot(xx, obs_KDE(xx), color=CB_color_cycle[0], label='Observed KDE')
+    plt.hist(obs_samples, bins=15, alpha=0.3, density=True, label='Observed hist.', rwidth=0.85, color=CB_color_cycle[0]);
+    plt.plot(xx, obs_KDE(xx), color=CB_color_cycle[0], label='Observed KDE');
 
-    plt.hist(pred_samples, bins=25, alpha=0.3, density=True, label='Predicted hist.', rwidth=0.85)
-    plt.plot(xx, pred_KDE(xx), color=CB_color_cycle[1], label='Predicted KDE')
+    plt.hist(pred_samples, bins=25, alpha=0.3, density=True, label='Predicted hist.', rwidth=0.85, color=CB_color_cycle[1]);
+    plt.plot(xx, pred_KDE(xx), color=CB_color_cycle[1], label='Predicted KDE', ls=':');
 
-    plt.legend(shadow=True)
-    plt.xlabel(r'$\mathcal{D}$')
-    plt.xlim(np.min(pred_samples[:,0]-0.002), np.max(pred_samples[:,0]+0.015))
-    plt.ylabel('Density')
+    plt.legend(shadow=True);
+    plt.xlabel(r'$\mathcal{D}$');
+    plt.xlim(np.min(pred_samples[:,0]-0.002), np.max(pred_samples[:,0]+0.015));
+    plt.ylabel('Density');
 
     plt.savefig(f'{plot_directory}/no_density_dists.png', bbox_inches='tight')
     # ========================================================================
@@ -560,15 +562,15 @@ def main():
 
     xx = np.linspace(np.min(pred_samples[:,0]), np.max(pred_samples[:,0]), 1000)
 
-    plt.plot(xx, obs_KDE(xx), label=r'$\pi_{obs}$')
-    plt.plot(xx, pred_KDE(xx), label=r'$\pi_{pred}$')
-    plt.plot(xx, pf_KDE(xx), label=r'$\pi_{update}$', ls='--')
+    plt.plot(xx, obs_KDE(xx), label=r'$\pi_{obs}$');
+    plt.plot(xx, pred_KDE(xx), label=r'$\pi_{pred}$', ls=':');
+    plt.plot(xx, pf_KDE(xx), label=r'$\pi_{update}$', ls='--');
 
     plt.xticks(ticks=np.linspace(np.min(pred_samples), np.max(pred_samples), 6),
-               labels=["{:.3f}".format(x) for x in np.linspace(np.min(pred_samples), np.max(pred_samples), 6)])
-    plt.xlabel(r'$u$')
-    plt.ylabel('Density')
-    plt.legend(shadow=True)
+               labels=["{:.3f}".format(x) for x in np.linspace(np.min(pred_samples), np.max(pred_samples), 6)]);
+    plt.xlabel(r'$u$');
+    plt.ylabel('Density');
+    plt.legend(shadow=True);
 
     plt.tight_layout()
     plt.savefig(f'{plot_directory}/no_dens_density.png', bbox_inches='tight')
@@ -593,19 +595,19 @@ def main():
     isort = np.argsort(pred_samples[:,0])
     isort_obs = np.argsort(obs_samples)
 
-    plt.step(np.append(pred_samples[isort,0], np.max(pred_samples[:,0])+0.015),
-             np.append(np.cumsum([1/n_init_samples]*n_init_samples), 1), label='$F^n_{pred}$')
     plt.step(np.append(np.min(pred_samples[:,0]), np.append(obs_samples[isort_obs], np.max(pred_samples[:,0])+0.015)),
              np.append(0, np.append(np.cumsum([1/n_obs_samples]*n_obs_samples), 1)),
-             label=r'$F^m_{obs}$')
+             label=r'$F^m_{obs}$');
     plt.step(np.append(pred_samples[isort,0], np.max(pred_samples[:,0])+0.015),
-             np.append(np.cumsum(kpartitioned_w[isort]), 1), label='$F^n_{predw}$', ls='--')
-    plt.plot(xx[1:], pf_CDF, label='PF update CDF', ls='--')
+             np.append(np.cumsum([1/n_init_samples]*n_init_samples), 1), label='$F^n_{pred}$', ls=':');
+    plt.step(np.append(pred_samples[isort,0], np.max(pred_samples[:,0])+0.015),
+             np.append(np.cumsum(kpartitioned_w[isort]), 1), label='$F^n_{pred;w}$', ls='--');
+    plt.plot(xx[1:], pf_CDF, label='PF update CDF', ls='--');
 
-    plt.xlabel(r'$\mathcal{D}$')
-    plt.xlim(np.min(pred_samples[:,0]-0.002), np.max(pred_samples[:,0]+0.015))
-    plt.ylabel('Cumulative distribution')
-    plt.legend(loc='lower right', shadow=True)
+    plt.xlabel(r'$\mathcal{D}$');
+    plt.xlim(np.min(pred_samples[:,0]-0.002), np.max(pred_samples[:,0]+0.015));
+    plt.ylabel('Cumulative distribution');
+    plt.legend(loc='lower right', shadow=True);
 
     plt.tight_layout()
     plt.savefig(f'{plot_directory}/no_dens_cdfs.png', bbox_inches='tight')
@@ -616,15 +618,15 @@ def main():
     plt.figure()
     xx = np.linspace(np.min(pred_samples[:,0]), np.max(pred_samples[:,0]), 1000)
 
-    plt.plot(xx, obs_KDE(xx), label=r'$\pi_{obs}$')
-    plt.plot(xx, pred_KDE(xx), label=r'$\pi_{pred}$')
-    plt.plot(xx, pf_KDE(xx), label=r'$\pi_{update}$')
+    plt.plot(xx, obs_KDE(xx), label=r'$\pi_{obs}$');
+    plt.plot(xx, pred_KDE(xx), label=r'$\pi_{pred}$', ls=':');
+    plt.plot(xx, pf_KDE(xx), label=r'$\pi_{update}$', ls='--');
 
     plt.xticks(ticks=np.linspace(np.min(pred_samples), np.max(pred_samples), 6),
-               labels=["{:.3f}".format(x) for x in np.linspace(np.min(pred_samples), np.max(pred_samples), 6)])
-    plt.xlabel(r'$u$')
-    plt.ylabel('Density')
-    plt.legend(shadow=True)
+               labels=["{:.3f}".format(x) for x in np.linspace(np.min(pred_samples), np.max(pred_samples), 6)]);
+    plt.xlabel(r'$u$');
+    plt.ylabel('Density');
+    plt.legend(shadow=True);
 
     plt.tight_layout()
     plt.savefig(f'{plot_directory}/no_dens_densities.png', bbox_inches='tight')
