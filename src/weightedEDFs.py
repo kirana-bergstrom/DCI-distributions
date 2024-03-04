@@ -154,8 +154,10 @@ def compute_b(sample_set_1, sample_set_2=None, w_1=None, w_2=None, targ_CDF=None
     return b
 
 
-def compute_optimal_w(H, b, w_initial=None, bins=None, iws=None):
-    
+def compute_optimal_w(H, b, w_initial=None, bins=None, silent=False):
+
+    if silent: cvx.solvers.options['show_progress'] = False
+
     n = np.size(H[:,0])
 
     if w_initial is None:

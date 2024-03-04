@@ -1,0 +1,11 @@
+name: dci
+
+dependencies:
+  - cvxopt
+  - jupyter
+  - python
+  - matplotlib
+  - numpy
+  - scipy
+  - scikit-learn
+  - seaborn

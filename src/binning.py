@@ -45,7 +45,7 @@ def distributeWeights(init_samples, bins_of_samples, w_bin):
 
 
 def computePartitionedWeights_kMeans_IID(init_samples, pred_samples, sample_set_2=None,
-                                         targ_CDF=None, n_clusters=None):
+                                         targ_CDF=None, n_clusters=None, silent=False):
     '''
     This function distributes a computed set of weights for a set of bins among the samples
     in the bins.
@@ -75,7 +75,7 @@ def computePartitionedWeights_kMeans_IID(init_samples, pred_samples, sample_set_
         b_cluster = wedfs.compute_b(centers, targ_CDF=targ_CDF)
     elif sample_set_2 is not None:
         b_cluster = wedfs.compute_b(centers, sample_set_2=sample_set_2)
-    w_cluster = wedfs.compute_optimal_w(H_cluster, b_cluster)
+    w_cluster = wedfs.compute_optimal_w(H_cluster, b_cluster, silent=silent)
     
     # distribute weights evenly in clusters
     w = distributeWeights(init_samples, labels, w_cluster)
@@ -85,7 +85,7 @@ def computePartitionedWeights_kMeans_IID(init_samples, pred_samples, sample_set_
 
 def computePartitionedWeights_regulargrid_IID(init_samples, pred_samples, bbox=None,
                                               sample_set_2=None, targ_CDF=None, n_bins=None,
-                                              remove_empty_bins=True):
+                                              remove_empty_bins=True, silent=True):
 
     n_samples = len(pred_samples)
     dim_D = np.shape(pred_samples)[1]
@@ -234,7 +234,7 @@ def computePartitionedWeights_regulargrid_IID(init_samples, pred_samples, bbox=N
         b_bin = wedfs.compute_b(centers, targ_CDF=targ_CDF)
     elif sample_set_2 is not None:
         b_bin = wedfs.compute_b(centers, sample_set_2=sample_set_2)
-    w_bin = wedfs.compute_optimal_w(H_bin, b_bin)
+    w_bin = wedfs.compute_optimal_w(H_bin, b_bin, silent=silent)
     
     # distribute weights evenly in clusters
     w = distributeWeights(init_samples, labels, w_bin)

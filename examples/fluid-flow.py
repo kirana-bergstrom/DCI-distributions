@@ -114,20 +114,20 @@ def main():
     # plot all fluid flow samples ==========================================
     plt.figure()
 
-    plt.hist(obs_samples, bins=10, density=True, label='Observed histogram', alpha=0.5, rwidth=0.8)
-    plt.hist(pred_samples, bins=60, density=True, label='Predicted histogram', alpha=0.5, rwidth=0.7)
-    xx = np.linspace(np.min(pred_samples), np.max(pred_samples), 1000)
-    plt.plot(xx, obs_KDE.pdf(xx), label=r'$\pi_{obs}$', c=CB_color_cycle[0])
-    plt.plot(xx, pred_KDE.pdf(xx), label=r'$\pi_{pred}$', c=CB_color_cycle[1])
+    plt.hist(obs_samples, bins=10, density=True, label='Observed hist.', alpha=0.5, rwidth=0.8, color=CB_color_cycle[0]);
+    xx = np.linspace(np.min(pred_samples), np.max(pred_samples), 1000);
+    plt.plot(xx, obs_KDE.pdf(xx), label=r'$\pi_{obs}$', c=CB_color_cycle[0]);
+    plt.hist(pred_samples, bins=60, density=True, label='Predicted hist.', alpha=0.5, rwidth=0.7, color=CB_color_cycle[1]);
+    plt.plot(xx, pred_KDE.pdf(xx), label=r'$\pi_{pred}$', c=CB_color_cycle[1], ls=':');
     plt.xticks(ticks=np.linspace(np.min(xx), np.max(xx), 7),
-               labels=["{:.0f}".format(x) for x in np.linspace(np.min(xx), np.max(xx), 7)])
-    plt.xlim(np.min(xx), np.max(xx))
-    plt.xlabel(r'$x$')
-    plt.ylabel('Density')
-    plt.legend(shadow=True)
+               labels=["{:.0f}".format(x) for x in np.linspace(np.min(xx), np.max(xx), 7)]);
+    plt.xlim(np.min(xx), np.max(xx));
+    plt.xlabel(r'$x$');
+    plt.ylabel('Density');
+    plt.legend(shadow=True);
 
-    plt.tight_layout()
-    plt.savefig(f'{plot_directory}/fluid_flow_samples.png', bbox_inches='tight')
+    plt.tight_layout();
+    plt.savefig(f'{plot_directory}/fluid_flow_samples.png', bbox_inches='tight');
     # ======================================================================
 
 
@@ -145,16 +145,16 @@ def main():
     # plot K-means weighted EDFs results ===================================
     plt.figure()
 
-    plt.step(pred_samples[isort], np.cumsum([1/n_init_samples]*n_init_samples),
-             label=r'$F^n_{pred}$')
     plt.step(np.append(0, np.append(obs_samples[isort_obs], [np.max(pred_samples)])),
              np.append(0, np.append(np.cumsum([1/n_obs_samples]*n_obs_samples), [1])),
-             label=r'$F^m_{obs}$')
+             label=r'$F^m_{obs}$');
+    plt.step(pred_samples[isort], np.cumsum([1/n_init_samples]*n_init_samples),
+             label=r'$F^n_{pred}$', ls=':');
     plt.step(pred_samples[isort], np.cumsum(w[isort]),
-             label=r'$F^n_{predw}$', ls='dashed')
+             label=r'$F^n_{pred;w}$', ls='--');
     plt.xticks(ticks=[0,200,400,600,800,1000,1200],
-               labels=[0,200,400,600,800,1000,1200])
-    plt.xlim(0,1200)
+               labels=[0,200,400,600,800,1000,1200]);
+    plt.xlim(0,1200);
 
     plt.xlabel(r'$x$')
     plt.ylabel('Cumulative distribution')
@@ -170,12 +170,12 @@ def main():
 
     xx = np.linspace(np.min(pred_samples), np.max(pred_samples), 1000)
 
-    plt.plot(xx, pred_KDE(xx), label=r'$\pi_{pred}$')
-    plt.plot(xx, obs_KDE(xx), label=r'$\pi_{obs}$')
-    plt.plot(xx, PF_update_KDE(xx), label=r'$\pi_{PFupRN}$', ls='--')
+    plt.plot(xx, obs_KDE(xx), label=r'$\pi_{obs}$');
+    plt.plot(xx, pred_KDE(xx), label=r'$\pi_{pred}$', ls=':');
+    plt.plot(xx, PF_update_KDE(xx), label=r'$\pi_{PFupRN}$', ls='--');
     plt.xticks(ticks=[0,200,400,600,800,1000,1200],
-               labels=[0,200,400,600,800,1000,1200])
-    plt.xlim(0,1200)
+               labels=[0,200,400,600,800,1000,1200]);
+    plt.xlim(0,1200);
 
     plt.xlabel(r'$x$')
     plt.ylabel('Density')
