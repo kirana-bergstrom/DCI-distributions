@@ -14,9 +14,9 @@ Welcome to the GitHub repository for the research paper "**A Distributions-based
 
 The repository is organized as follows:
 
-- `src`: This directory contains the source code for implementing the algorithms and conducting experiments discussed in the paper.
+- `src`: This directory contains the source code for implementing the algorithms and conducting experiments discussed in the paper. The file `binning` contains high-level routines for the binning-based method discussed in Section 4. The file `weights` contains lower-level routines for computing the naive weighting method discussed in Section 3.
 
-- `examples`: This directory contains usage examples, needed data, and expected outputs to guide users in reproducing the results.
+- `examples`: This directory contains usage examples, needed data, and expected outputs to guide users in reproducing the results. The files `heat_eq.py` and `heat_eq.pynb` contain code and results for reproducing the figures and results related to the heat equation illustrative example first introduced in Section 2.4, referenced throughout the paper. The files `heat_eq_convergence.py` and `heat_eq_convergence.pynb`, contain code and resoluts for reproducing the figures and results related to the convergence example in Section 5.1. The files `fluid_flow.py` and `fluid_flow.pynb` contain code and plotting scripts for reproducing the results in Section 5.2. Finally, the `data` subdirectory contains data for the examples in 5.1 and 5.2.
 
 ## Reproducing Results
 
@@ -71,7 +71,7 @@ If you find this code useful for your research, please consider citing our paper
 ```
 
 ## License
-This code is released under the [Your License] License. See the LICENSE file for details.
+This code is released under the MIT License. See the LICENSE file for details.
 
 ## Contact
 For any inquiries or assistance, please contact Kirana Bergstrom at kirana.bergstrom@ucdenver.edu.
