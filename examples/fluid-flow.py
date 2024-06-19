@@ -132,7 +132,7 @@ def main():
 
 
     # for binning method
-    n_clusters = 120
+    n_clusters = 100
     w, labels, centers, w_cluster = binning.computePartitionedWeights_kMeans_IID(init_samples,
                                                                                  pred_samples,
                                                                                  sample_set_2=obs_samples,
@@ -207,10 +207,13 @@ def main():
     ax.set_yticklabels([0,400,800,1200,1600,2000])
     ax.set_zticks([0,100])
     ax.set_zticklabels([0,100])
+    ax.set_xlabel('x', labelpad=15)
+    ax.set_ylabel('y', labelpad=30, va='top')
+    ax.set_zlabel('\nz', va='top', labelpad=4)
 
     cbar = fig.colorbar(p, ax=ax, fraction=0.025, pad=0.04)
-    cbar.set_ticks(np.linspace(np.min(w), np.max(w), 7))
-    cbar.ax.set_yticklabels(["{:.4f}".format(x) for x in np.linspace(np.min(w), np.max(w), 7)])
+    cbar.set_ticks(np.linspace(np.min(w[w > tolerance]), np.max(w[w > tolerance]), 7));
+    cbar.ax.set_yticklabels(["{:.4f}".format(x) for x in np.linspace(np.min(w[w > tolerance]), np.max(w[w > tolerance]), 7)]);
 
     ax.set_box_aspect([1.0, 1.83, 0.08])
 
@@ -246,8 +249,11 @@ def main():
     ax.set_yticklabels([0,400,800,1200,1600,2000])
     ax.set_zticks([0,100])
     ax.set_zticklabels([0,100])
-
-    ax.set_box_aspect([1.0, 1.83, 0.08])
+    ax.set_xlabel('x', labelpad=15)
+    ax.set_ylabel('y', labelpad=30, va='top')
+    ax.set_zlabel('\nz', va='top', labelpad=5)
+    
+    ax.set_box_aspect([1.0, 1.83, 0.08], zoom=0.95);
 
     plt.savefig(f'{plot_directory}/fluid_flow_density_res_rej.png', bbox_inches='tight')
     # ======================================================================
@@ -275,10 +281,13 @@ def main():
     ax.set_yticklabels([0,400,800,1200,1600,2000])
     ax.set_zticks([0,100])
     ax.set_zticklabels([0,100])
-
+    ax.set_xlabel('x', labelpad=15)
+    ax.set_ylabel('y', labelpad=30, va='top')
+    ax.set_zlabel('\nz', va='top', labelpad=4)
+    
     cbar = fig.colorbar(p, ax=ax, fraction=0.025, pad=0.04)
-    cbar.set_ticks(np.linspace(np.min(rn_w), np.max(rn_w), 7))
-    cbar.ax.set_yticklabels(["{:.4f}".format(x) for x in np.linspace(np.min(rn_w), np.max(rn_w), 7)])
+    cbar.set_ticks(np.linspace(np.min(rn_w), np.max(rn_w), 7));
+    cbar.ax.set_yticklabels(["{:.4f}".format(x) for x in np.linspace(np.min(rn_w), np.max(rn_w), 7)]);
 
     ax.set_box_aspect([1.0, 1.83, 0.08])
 
