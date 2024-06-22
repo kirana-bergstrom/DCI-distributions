@@ -49,8 +49,8 @@ def main():
     mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color=CB_color_cycle)
     # ======================================================================
 
-
-    random.seed(20) # random seed
+    random.seed(20)
+    np.random.seed(17)
 
     # get data from files
     start_data = np.genfromtxt('./data/streams-initial-start.dat',
@@ -94,6 +94,7 @@ def main():
     pred_samples = pred_samples_full[pred_samples_full[:,1] < 100, :1]
     init_samples = init_samples_full[pred_samples_full[:,1] < 100, :]
     n_init_samples = len(init_samples)
+    print(n_init_samples)
 
     # get observed
     n_obs_samples = 10000
@@ -109,6 +110,12 @@ def main():
 
     print(f'For density-based solution:')
     print(f'    E(r) = {np.mean(r)}')
+
+    update_inds = rejection_sampling(rn_w)
+    update_samples = init_samples[update_inds]
+    n_update_samples = len(update_samples)
+    pf_samples = pred_samples[update_inds]
+    pf_KDE = GKDE(pf_samples.T)
 
 
     # plot all fluid flow samples ==========================================
@@ -187,46 +194,70 @@ def main():
 
 
     # plot K-means binning results =========================================
-    fig = plt.figure(figsize=(10,8))
-    ax = fig.add_subplot(projection='3d')
-
+    fig = plt.figure(figsize=(10,8));
+    ax = fig.add_subplot(projection='3d');
+    
     tolerance = 0.0001
-
+    
     p = ax.scatter(init_samples[w > tolerance,0], init_samples[w > tolerance,1], init_samples[w>tolerance,2],
-                   c=w[w > tolerance], label='Start positions', s=4)
+                   c=w[w > tolerance], label='Start positions', s=4);
     ax.scatter(obs_samples, np.random.uniform(0, 100, (n_obs_samples,1)),
                np.random.uniform(0, 100, (n_obs_samples,1)),
-               color='k', label='Finish positions', s=4)
-
-    ax.set_ylim(0, 2200)
-    ax.set_xlim(0, 1200)
-    ax.set_zlim(0, 100)
-    ax.set_xticks([0,300,600,900,1200])
-    ax.set_xticklabels([0,300,600,900,1200])
-    ax.set_yticks([0,400,800,1200,1600,2000])
-    ax.set_yticklabels([0,400,800,1200,1600,2000])
-    ax.set_zticks([0,100])
-    ax.set_zticklabels([0,100])
+               color='k', label='Finish positions', s=4);
+    
+    ax.set_ylim(0, 2200);
+    ax.set_xlim(0, 1200);
+    ax.set_zlim(0, 100);
     ax.set_xlabel('x', labelpad=15)
     ax.set_ylabel('y', labelpad=30, va='top')
     ax.set_zlabel('\nz', va='top', labelpad=4)
-
-    cbar = fig.colorbar(p, ax=ax, fraction=0.025, pad=0.04)
+    ax.set_xticks([0,300,600,900,1200]);
+    ax.set_xticklabels([0,300,600,900,1200]);
+    ax.set_yticks([0,400,800,1200,1600,2000]);
+    ax.set_yticklabels([0,400,800,1200,1600,2000]);
+    ax.set_zticks([0,100]);
+    ax.set_zticklabels([0,100]);
+    
+    cbar = fig.colorbar(p, ax=ax, fraction=0.025, pad=0.04);
     cbar.set_ticks(np.linspace(np.min(w[w > tolerance]), np.max(w[w > tolerance]), 7));
     cbar.ax.set_yticklabels(["{:.4f}".format(x) for x in np.linspace(np.min(w[w > tolerance]), np.max(w[w > tolerance]), 7)]);
-
-    ax.set_box_aspect([1.0, 1.83, 0.08])
-
-    plt.savefig(f'{plot_directory}/fluid_flow_kmeans_res.png', bbox_inches='tight')
+    
+    ax.set_box_aspect([1.0, 1.83, 0.08]);
+    
+    plt.savefig(f'{plot_directory}/fluid_flow_kmeans_weights.png', bbox_inches='tight');
     # ======================================================================
 
 
-    update_inds = rejection_sampling(rn_w)
-    update_samples = init_samples[update_inds]
-    n_update_samples = len(update_samples)
+    # plot weight comparisons =======================================
+    plt.figure()
+    plt.plot(np.linspace(0, np.max(rn_w), 1000),
+             np.linspace(0, np.max(rn_w), 1000), color='k', label='Identity')
+    
+    plt.xlabel('Radon-Nikdoym weights');
+    plt.ylabel('Binning weights');
+    plt.scatter(rn_w, w, label=f'binning')
+    plt.xticks(ticks=np.linspace(np.min(rn_w), np.max(rn_w), 6),
+               labels=["{:.3f}".format(x) for x in np.linspace(np.min(w), np.max(rn_w), 6)]);
+    plt.legend(shadow=True, loc='lower right', bbox_to_anchor=(1., 0.));
+    plt.ylim(-0.001, 0.0065)
 
-    pf_samples = pred_samples[update_inds]
-    pf_KDE = GKDE(pf_samples.T)
+    plt.figure()
+    plt.plot(np.linspace(0, np.max(rn_w), 1000),
+             np.linspace(0, np.max(rn_w), 1000), color='k', label='Identity')
+    
+    plt.xlabel('Radon-Nikodym weights');
+    plt.ylabel('Binning weights');
+    for label in np.unique(labels):
+        if label != 7 and label != 43:
+            plt.scatter(rn_w[(labels==label)], w[(labels==label)], color=CB_color_cycle[0])
+    plt.scatter(rn_w[(labels==7)], w[(labels==7)], label=f'bin 7', marker='x', color=CB_color_cycle[3]);
+    plt.scatter(rn_w[(labels==43)], w[(labels==43)], label=f'bin 43', marker='d', color=CB_color_cycle[4]);
+    plt.xticks(ticks=np.linspace(np.min(rn_w), np.max(rn_w), 6),
+               labels=["{:.3f}".format(x) for x in np.linspace(np.min(w), np.max(rn_w), 6)]);
+    plt.ylim(-0.001, 0.0065)
+    plt.legend(shadow=True, loc='lower right', bbox_to_anchor=(1., 0.));
+    plt.savefig(f'{plot_directory}/fluid_flow_weights.png', bbox_inches='tight')
+    # ======================================================================
 
 
     # plot density rejection results =======================================
@@ -259,19 +290,47 @@ def main():
     # ======================================================================
 
 
+    # plot bins in data space =======================================
+    plt.figure()
+    xx = np.linspace(np.min(pred_samples), np.max(pred_samples), 1000)
+    
+    low_b7 = np.min(pred_samples[(labels==7),0])
+    upp_b7 = np.max(pred_samples[(labels==7),0])
+    low_b43 = np.min(pred_samples[(labels==43),0])
+    upp_b43 = np.max(pred_samples[(labels==43),0])
+    
+    plt.plot(xx, obs_KDE(xx), label=r'$\pi_{obs}$');
+    plt.plot(xx, pred_KDE(xx), label=r'$\pi_{pred}$', ls=':');
+    plt.plot(xx, PF_update_KDE(xx), label=r'$\pi_{PF_{update}}$', ls='--');
+    plt.axvspan(low_b7, upp_b7, alpha=0.3, label='bin 7', color=CB_color_cycle[3]);
+    plt.axvspan(low_b43, upp_b43, alpha=0.3, label='bin 43', color=CB_color_cycle[4]);
+    plt.xticks(ticks=[0,200,400,600,800,1000,1200],
+               labels=[0,200,400,600,800,1000,1200]);
+    plt.xlim(800,1200);
+    
+    plt.xlabel(r'$x$');
+    plt.ylabel('Density');
+    plt.legend(loc='upper right', shadow=True);
+    
+    plt.tight_layout();
+    plt.savefig(f'{plot_directory}/fluid_flow_density-bins.png', bbox_inches='tight');
+    # ======================================================================
+
+
     # plot density results =================================================
     fig = plt.figure(figsize=(10,8))
-
+    
     ax = fig.add_subplot(projection='3d')
-
-    p = ax.scatter(init_samples[:,0], init_samples[:,1], init_samples[:,2],
-                   c=rn_w, label='Start positions', s=4)
+    
+    p = ax.scatter(init_samples[rn_w > tolerance,0], init_samples[rn_w > tolerance,1], init_samples[rn_w > tolerance,2],
+                   c=rn_w[rn_w > tolerance], s=4, vmin=np.min(w[w > tolerance]), vmax=np.max(w[w > tolerance]))
     ax.scatter(obs_samples, np.random.uniform(0, 100, (n_obs_samples,1)),
                np.random.uniform(0, 100, (n_obs_samples,1)),
-               color='k', label='Observed samples', s=4)
-
-    ax.legend(loc='upper left', bbox_to_anchor=(0, 0.85), shadow=True)
-
+               color='k', s=4)
+    
+    ax.set_xlabel('x', labelpad=15)
+    ax.set_ylabel('y', labelpad=30, va='top')
+    ax.set_zlabel('\nz', va='top', labelpad=4)
     ax.set_ylim(0, 2200)
     ax.set_xlim(0, 1200)
     ax.set_zlim(0, 100)
@@ -281,17 +340,15 @@ def main():
     ax.set_yticklabels([0,400,800,1200,1600,2000])
     ax.set_zticks([0,100])
     ax.set_zticklabels([0,100])
-    ax.set_xlabel('x', labelpad=15)
-    ax.set_ylabel('y', labelpad=30, va='top')
-    ax.set_zlabel('\nz', va='top', labelpad=4)
     
     cbar = fig.colorbar(p, ax=ax, fraction=0.025, pad=0.04)
-    cbar.set_ticks(np.linspace(np.min(rn_w), np.max(rn_w), 7));
-    cbar.ax.set_yticklabels(["{:.4f}".format(x) for x in np.linspace(np.min(rn_w), np.max(rn_w), 7)]);
-
+    cbar.set_ticks(np.linspace(np.min(w[w > tolerance]), np.max(w[w > tolerance]), 7));
+    cbar.ax.set_yticklabels(["{:.4f}".format(x) for x in np.linspace(np.min(w[w > tolerance]), np.max(w[w > tolerance]), 7)]);
+    
     ax.set_box_aspect([1.0, 1.83, 0.08])
-
-    plt.savefig(f'{plot_directory}/fluid_flow_density_res.png', bbox_inches='tight')
+    
+    plt.tight_layout()
+    plt.savefig(f'{plot_directory}/fluid_flow_rn_weights.png', bbox_inches='tight')
     # ======================================================================
 
 
